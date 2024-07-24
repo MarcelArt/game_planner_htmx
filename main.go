@@ -13,7 +13,6 @@ import (
 )
 
 func main() {
-	lib.SetupFirebase()
 	engine := html.New("./views", ".html")
 	app := fiber.New(fiber.Config{
 		Views: engine,
