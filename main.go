@@ -9,10 +9,12 @@ import (
 
 	"github.com/MarcelArt/game_planner_htmx/config"
 	_ "github.com/MarcelArt/game_planner_htmx/config"
+	"github.com/MarcelArt/game_planner_htmx/database"
 	"github.com/MarcelArt/game_planner_htmx/routes"
 )
 
 func main() {
+	database.ConnectDB()
 	engine := html.New("./views", ".html")
 	app := fiber.New(fiber.Config{
 		Views: engine,
