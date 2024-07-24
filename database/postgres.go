@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/MarcelArt/game_planner_htmx/config"
+	"github.com/MarcelArt/game_planner_htmx/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -32,6 +33,8 @@ func ConnectDB() {
 }
 
 func Migrate() {
-	// DB.AutoMigrate()
+	DB.AutoMigrate(
+		&models.User{},
+	)
 	fmt.Println("Database Migrated")
 }
