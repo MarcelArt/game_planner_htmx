@@ -9,7 +9,6 @@ import (
 
 	"github.com/MarcelArt/game_planner_htmx/config"
 	_ "github.com/MarcelArt/game_planner_htmx/config"
-	"github.com/MarcelArt/game_planner_htmx/lib"
 	"github.com/MarcelArt/game_planner_htmx/routes"
 )
 
