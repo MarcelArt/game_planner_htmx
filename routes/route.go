@@ -12,6 +12,7 @@ func SetupRoutes(app *fiber.App) {
 	app.Use(logger.New())
 
 	app.Static("/scripts", "./views/scripts")
-	// app.Static("/src", "./views/src")
 	app.Get("/", handlers.Index)
+
+	SetupAuthRoutes(app)
 }
