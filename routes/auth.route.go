@@ -11,4 +11,5 @@ func SetupAuthRoutes(app *fiber.App) {
 	authHandler := handlers.NewAuthHandler(repositories.NewUserRepo(database.DB))
 
 	app.Get("/register", authHandler.RegisterView)
+	app.Post("/register", authHandler.Register)
 }
