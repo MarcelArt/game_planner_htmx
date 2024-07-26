@@ -12,4 +12,6 @@ func SetupAuthRoutes(app *fiber.App) {
 
 	app.Get("/register", authHandler.RegisterView)
 	app.Post("/register", authHandler.Register)
+
+	app.Get("/login", authHandler.LoginView)
 }

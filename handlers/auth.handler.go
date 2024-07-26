@@ -49,3 +49,25 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusPermanentRedirect).Redirect("/")
 }
+
+func (h *AuthHandler) LoginView(c *fiber.Ctx) error {
+	return c.Status(fiber.StatusOK).Render("login", nil, "layouts/main")
+}
+
+func (h *AuthHandler) Login(c *fiber.Ctx) error {
+	username := c.FormValue("username")
+	password := c.FormValue("password")
+
+	user, err := h.userRepo.GetByUsernameOrEmail(username)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).Render("login", fiber.Map{
+			"error": err.Error(),
+		}, "layouts/main")
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
+		return c.Status(fiber.StatusUnauthorized).Render("login", fiber.Map{
+			"error": err.Error(),
+		}, "layouts/main")
+	}
+}
