@@ -13,12 +13,14 @@ import (
 )
 
 type AuthHandler struct {
-	userRepo repositories.IUserRepo
+	userRepo            repositories.IUserRepo
+	connectedDeviceRepo repositories.IConnectedDeviceRepo
 }
 
-func NewAuthHandler(userRepo repositories.IUserRepo) *AuthHandler {
+func NewAuthHandler(userRepo repositories.IUserRepo, connectedDeviceRepo repositories.IConnectedDeviceRepo) *AuthHandler {
 	return &AuthHandler{
-		userRepo: userRepo,
+		userRepo:            userRepo,
+		connectedDeviceRepo: connectedDeviceRepo,
 	}
 }
 
@@ -90,6 +92,19 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 		expireAt = time.Now().Add(enums.Month)
 	}
 	rCookie := utils.CreateCookie("rt", refreshToken, expireAt)
+
+	device := &models.ConnectedDevice{
+		RefreshToken: refreshToken,
+		UserAgent:    c.Get("User-Agent", ""),
+		Ip:           c.IP(),
+		UserID:       user.ID,
+	}
+	device, err = h.connectedDeviceRepo.Create(device)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).Render("login", fiber.Map{
+			"error": err.Error(),
+		}, "layouts/main")
+	}
 
 	c.Cookie(aCookie)
 	c.Cookie(rCookie)

@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/MarcelArt/game_planner_htmx/database"
@@ -67,6 +68,19 @@ func refreshTokenPair(c *fiber.Ctx, rt string) error {
 		expireAt = time.Now().Add(enums.Month)
 	}
 	rCookie := utils.CreateCookie("rt", refreshToken, expireAt)
+
+	connectedDeviceRepo := repositories.NewConnectedDeviceRepo(database.DB)
+	device, err := connectedDeviceRepo.GetByToken(rt)
+	if err != nil {
+		return c.Redirect("/login")
+	}
+	device.RefreshToken = refreshToken
+	device.Ip = c.IP()
+	device.UserAgent = c.Get("User-Agent")
+	deviceID := strconv.Itoa(int(device.ID))
+	if err := connectedDeviceRepo.Update(deviceID, device); err != nil {
+		return c.Redirect("/login")
+	}
 
 	c.Cookie(aCookie)
 	c.Cookie(rCookie)

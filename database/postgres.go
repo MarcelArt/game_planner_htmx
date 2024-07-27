@@ -35,6 +35,7 @@ func ConnectDB() {
 func Migrate() {
 	DB.AutoMigrate(
 		&models.User{},
+		&models.ConnectedDevice{},
 	)
 	fmt.Println("Database Migrated")
 }
