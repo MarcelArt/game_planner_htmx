@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -14,12 +15,19 @@ type env struct {
 	DBPassword string
 	DBName     string
 	DBHost     string
+	JwtSecret  string
+	IsProd     bool
 }
 
 var Env *env
 
 func init() {
 	err := godotenv.Load(".env")
+	if err != nil {
+		log.Panic(err.Error())
+	}
+
+	isProd, err := strconv.ParseBool(os.Getenv("IS_PROD"))
 	if err != nil {
 		log.Panic(err.Error())
 	}
@@ -31,5 +39,7 @@ func init() {
 		DBPassword: os.Getenv("DB_PASSWORD"),
 		DBName:     os.Getenv("DB_NAME"),
 		DBHost:     os.Getenv("DB_HOST"),
+		JwtSecret:  os.Getenv("JWT_SECRET"),
+		IsProd:     isProd,
 	}
 }

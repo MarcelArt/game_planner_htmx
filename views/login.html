@@ -7,10 +7,14 @@
         <input type="text" id="username" name="username" required
                 class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
       </div>
-      <div class="mb-6">
+      <div class="mb-4">
         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
         <input type="password" id="password" name="password" required
                 class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+      </div>
+      <div class="mb-6">
+        <!-- <label for="isRemember" class="block text-sm font-medium text-gray-700">Stay logged in</label> -->
+        <p class="block text-sm font-medium text-gray-700"><input class="mr-4" type="checkbox" id="isRemember" name="isRemember">Stay logged in</p>
       </div>
       {{ if .error }}
       <div class="mb-4 p-2 bg-red-200 text-red-800 rounded">

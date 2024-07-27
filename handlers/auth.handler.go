@@ -2,9 +2,12 @@ package handlers
 
 import (
 	"log"
+	"time"
 
+	"github.com/MarcelArt/game_planner_htmx/enums"
 	"github.com/MarcelArt/game_planner_htmx/models"
 	"github.com/MarcelArt/game_planner_htmx/repositories"
+	"github.com/MarcelArt/game_planner_htmx/utils"
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -57,6 +60,8 @@ func (h *AuthHandler) LoginView(c *fiber.Ctx) error {
 func (h *AuthHandler) Login(c *fiber.Ctx) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
+	isRememberStr := c.FormValue("isRemember", "false")
+	isRemember := utils.ParseCheckboxToBool(isRememberStr)
 
 	user, err := h.userRepo.GetByUsernameOrEmail(username)
 	if err != nil {
@@ -70,4 +75,24 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 			"error": err.Error(),
 		}, "layouts/main")
 	}
+
+	accessToken, refreshToken, err := utils.GenerateTokenPair(user, isRemember)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).Render("login", fiber.Map{
+			"error": err.Error(),
+		}, "layouts/main")
+	}
+
+	aCookie := utils.CreateCookie("at", accessToken, time.Now().Add(5*time.Minute))
+
+	expireAt := time.Now().Add(enums.Day)
+	if isRemember {
+		expireAt = time.Now().Add(enums.Month)
+	}
+	rCookie := utils.CreateCookie("rt", refreshToken, expireAt)
+
+	c.Cookie(aCookie)
+	c.Cookie(rCookie)
+
+	return c.Status(fiber.StatusPermanentRedirect).Redirect("/")
 }
