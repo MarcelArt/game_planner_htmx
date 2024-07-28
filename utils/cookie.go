@@ -15,7 +15,7 @@ func CreateCookie(key string, value string, expireAt time.Time) *fiber.Cookie {
 		Secure:   config.Env.IsProd,
 		SameSite: "lax",
 		Path:     "/",
-		Expires:  expireAt,
+		// Expires:  expireAt,
 	}
 
 	return cookie

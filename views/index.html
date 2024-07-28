@@ -1,6 +1,16 @@
-<!-- {{template "partials/header" .}}
-
-
-{{template "partials/footer" .}} -->
-<h1>{{.Title}}</h1>
-<a href="/register">Register</a>
+<div class="w-64 h-screen bg-indigo-900 shadow-md">
+  <nav class="pt-4">
+      <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-400 text-white font-bold m-4" 
+         hx-get="/home" hx-target="#content">
+          Home
+      </a>
+      <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-400 text-white font-bold m-4" 
+         hx-get="/about" hx-target="#content">
+          About
+      </a>
+      <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-400 text-white font-bold m-4" 
+         hx-get="/contact" hx-target="#content">
+          Contact
+      </a>
+  </nav>
+</div>

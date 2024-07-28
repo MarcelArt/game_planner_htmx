@@ -35,20 +35,24 @@ func (m *AuthMiddleware) Auth(c *fiber.Ctx) error {
 	rt := c.Cookies("rt", "")
 
 	if at == "" || rt == "" {
+		log.Println("Not logged in")
 		return c.Redirect("/login")
 	}
 
 	aClaims, isAccessExpired, err := utils.ParseToken(at)
 	if isAccessExpired {
+		log.Println("Token refreshed")
 		return m.refreshTokenPair(c, rt)
 	}
 	if err != nil {
+		log.Println("1. Token invalid redirect to login")
 		log.Println(err.Error())
 		return c.Redirect("/login")
 	}
 
 	c.Locals("userId", aClaims["userId"])
 
+	log.Println("Authorized")
 	return c.Next()
 }
 
@@ -63,11 +67,13 @@ func (m *AuthMiddleware) refreshTokenPair(c *fiber.Ctx, rt string) error {
 
 	user, err := m.userRepo.GetByID(userID)
 	if err != nil {
+		log.Println("2. Token invalid redirect to login")
 		return c.Redirect("/login")
 	}
 
 	accessToken, refreshToken, err := utils.GenerateTokenPair(user, isRemember)
 	if err != nil {
+		log.Println("3. Token invalid redirect to login")
 		return c.Redirect("/login")
 	}
 
@@ -81,6 +87,7 @@ func (m *AuthMiddleware) refreshTokenPair(c *fiber.Ctx, rt string) error {
 
 	device, err := m.connectedDeviceRepo.GetByToken(rt)
 	if err != nil {
+		log.Println("4. Token invalid redirect to login")
 		return c.Redirect("/login")
 	}
 	device.RefreshToken = refreshToken
@@ -88,6 +95,7 @@ func (m *AuthMiddleware) refreshTokenPair(c *fiber.Ctx, rt string) error {
 	device.UserAgent = c.Get("User-Agent")
 	deviceID := strconv.Itoa(int(device.ID))
 	if err := m.connectedDeviceRepo.Update(deviceID, device); err != nil {
+		log.Println("5. Token invalid redirect to login")
 		return c.Redirect("/login")
 	}
 
