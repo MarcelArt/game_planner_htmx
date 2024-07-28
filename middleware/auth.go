@@ -13,7 +13,19 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func Auth(c *fiber.Ctx) error {
+type AuthMiddleware struct {
+	userRepo            repositories.IUserRepo
+	connectedDeviceRepo repositories.IConnectedDeviceRepo
+}
+
+func NewAuthMiddleware(userRepo repositories.IUserRepo, connectedDeviceRepo repositories.IConnectedDeviceRepo) *AuthMiddleware {
+	return &AuthMiddleware{
+		userRepo:            userRepo,
+		connectedDeviceRepo: connectedDeviceRepo,
+	}
+}
+
+func (m *AuthMiddleware) Auth(c *fiber.Ctx) error {
 	path := c.Path()
 	if path == "/login" || path == "/register" {
 		c.Next()
@@ -28,7 +40,7 @@ func Auth(c *fiber.Ctx) error {
 
 	aClaims, isAccessExpired, err := utils.ParseToken(at)
 	if isAccessExpired {
-		return refreshTokenPair(c, rt)
+		return m.refreshTokenPair(c, rt)
 	}
 	if err != nil {
 		log.Println(err.Error())
@@ -40,18 +52,16 @@ func Auth(c *fiber.Ctx) error {
 	return c.Next()
 }
 
-func refreshTokenPair(c *fiber.Ctx, rt string) error {
+func (m *AuthMiddleware) refreshTokenPair(c *fiber.Ctx, rt string) error {
 	rClaims, isRefreshExpired, err := utils.ParseToken(rt)
 	if isRefreshExpired || err != nil {
 		return c.Redirect("/login")
 	}
 
-	userRepo := repositories.NewUserRepo(database.DB)
-
 	isRemember := rClaims["isRemember"].(bool)
 	userID := utils.ClaimsNumberToString(rClaims["userId"])
 
-	user, err := userRepo.GetByID(userID)
+	user, err := m.userRepo.GetByID(userID)
 	if err != nil {
 		return c.Redirect("/login")
 	}
@@ -69,8 +79,7 @@ func refreshTokenPair(c *fiber.Ctx, rt string) error {
 	}
 	rCookie := utils.CreateCookie("rt", refreshToken, expireAt)
 
-	connectedDeviceRepo := repositories.NewConnectedDeviceRepo(database.DB)
-	device, err := connectedDeviceRepo.GetByToken(rt)
+	device, err := m.connectedDeviceRepo.GetByToken(rt)
 	if err != nil {
 		return c.Redirect("/login")
 	}
@@ -78,7 +87,7 @@ func refreshTokenPair(c *fiber.Ctx, rt string) error {
 	device.Ip = c.IP()
 	device.UserAgent = c.Get("User-Agent")
 	deviceID := strconv.Itoa(int(device.ID))
-	if err := connectedDeviceRepo.Update(deviceID, device); err != nil {
+	if err := m.connectedDeviceRepo.Update(deviceID, device); err != nil {
 		return c.Redirect("/login")
 	}
 
