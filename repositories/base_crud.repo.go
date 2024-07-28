@@ -13,6 +13,7 @@ type IBaseCrudRepo[TModel any] interface {
 	Update(id string, input *TModel) error
 	Delete(id string) (*TModel, error)
 	GetByID(id string) (*TModel, error)
+	CreateTrx(tx *gorm.DB, input *TModel) (*TModel, error)
 }
 
 type BaseCrudRepo[TModel any] struct {
@@ -55,4 +56,10 @@ func (r *BaseCrudRepo[TModel]) GetByID(id string) (*TModel, error) {
 	var model *TModel
 	err := r.db.First(&model, id).Error
 	return model, err
+}
+
+func (r *BaseCrudRepo[TModel]) CreateTrx(tx *gorm.DB, input *TModel) (*TModel, error) {
+	err := tx.Create(&input).Error
+
+	return input, err
 }

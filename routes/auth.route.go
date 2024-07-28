@@ -8,7 +8,11 @@ import (
 )
 
 func SetupAuthRoutes(app *fiber.App) {
-	authHandler := handlers.NewAuthHandler(repositories.NewUserRepo(database.DB), repositories.NewConnectedDeviceRepo(database.DB))
+	authHandler := handlers.NewAuthHandler(
+		repositories.NewUserRepo(database.DB),
+		repositories.NewConnectedDeviceRepo(database.DB),
+		repositories.NewProfileRepo(database.DB),
+	)
 
 	app.Get("/register", authHandler.RegisterView)
 	app.Post("/register", authHandler.Register)

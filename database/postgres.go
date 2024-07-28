@@ -36,6 +36,7 @@ func Migrate() {
 	DB.AutoMigrate(
 		&models.User{},
 		&models.ConnectedDevice{},
+		&models.Profile{},
 	)
 	fmt.Println("Database Migrated")
 }

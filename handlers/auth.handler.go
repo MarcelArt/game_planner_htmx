@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 	"time"
 
+	"github.com/MarcelArt/game_planner_htmx/database"
 	"github.com/MarcelArt/game_planner_htmx/enums"
 	"github.com/MarcelArt/game_planner_htmx/models"
 	"github.com/MarcelArt/game_planner_htmx/repositories"
@@ -15,12 +17,14 @@ import (
 type AuthHandler struct {
 	userRepo            repositories.IUserRepo
 	connectedDeviceRepo repositories.IConnectedDeviceRepo
+	profileRepo         repositories.IProfileRepo
 }
 
-func NewAuthHandler(userRepo repositories.IUserRepo, connectedDeviceRepo repositories.IConnectedDeviceRepo) *AuthHandler {
+func NewAuthHandler(userRepo repositories.IUserRepo, connectedDeviceRepo repositories.IConnectedDeviceRepo, profileRepo repositories.IProfileRepo) *AuthHandler {
 	return &AuthHandler{
 		userRepo:            userRepo,
 		connectedDeviceRepo: connectedDeviceRepo,
+		profileRepo:         profileRepo,
 	}
 }
 
@@ -45,13 +49,28 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 	}
 	user.Password = string(hashedPassword)
 
-	_, err = h.userRepo.Create(&user)
+	tx := database.DB.Begin()
+	createdUser, err := h.userRepo.CreateTrx(tx, &user)
 	if err != nil {
+		tx.Rollback()
 		return c.Status(fiber.StatusInternalServerError).Render("register", fiber.Map{
 			"error": err.Error(),
 		}, "layouts/main")
 	}
 
+	_, err = h.profileRepo.CreateTrx(tx, &models.Profile{
+		Name:   createdUser.Username,
+		Avatar: fmt.Sprintf("https://ui-avatars.com/api/?name=%s", createdUser.Username),
+		UserID: createdUser.ID,
+	})
+	if err != nil {
+		tx.Rollback()
+		return c.Status(fiber.StatusInternalServerError).Render("register", fiber.Map{
+			"error": err.Error(),
+		}, "layouts/main")
+	}
+
+	tx.Commit()
 	return c.Status(fiber.StatusPermanentRedirect).Redirect("/")
 }
 
