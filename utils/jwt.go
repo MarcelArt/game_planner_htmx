@@ -29,7 +29,7 @@ func generateAccessToken(user *models.User) (string, error) {
 	claims := jwt.MapClaims{
 		"username": user.Username,
 		"userId":   user.ID,
-		"exp":      time.Now().Add(time.Second * 5).Unix(),
+		"exp":      time.Now().Add(time.Minute * 5).Unix(),
 	}
 
 	token := jwt.New(jwt.SigningMethodHS256)
