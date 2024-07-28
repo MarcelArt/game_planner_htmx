@@ -7,6 +7,7 @@ import (
 
 type IProfileRepo interface {
 	IBaseCrudRepo[models.Profile]
+	GetByUserID(userID uint) (*models.Profile, error)
 }
 
 type ProfileRepo struct {
@@ -19,4 +20,10 @@ func NewProfileRepo(db *gorm.DB) *ProfileRepo {
 			db: db,
 		},
 	}
+}
+
+func (r *ProfileRepo) GetByUserID(userID uint) (*models.Profile, error) {
+	var profile *models.Profile
+	err := r.db.Where("user_id = ?", userID).First(&profile).Error
+	return profile, err
 }

@@ -6,8 +6,8 @@ import (
 )
 
 func Index(c *fiber.Ctx) error {
-	user, _ := middleware.GetCurrentUser(c)
+	profile, _ := middleware.GetCurrentProfile(c)
 	return c.Render("index", fiber.Map{
-		"Title": user.Username,
+		"profile": profile,
 	}, "layouts/main")
 }

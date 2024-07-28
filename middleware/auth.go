@@ -117,3 +117,15 @@ func GetCurrentUser(c *fiber.Ctx) (*models.User, error) {
 
 	return user, err
 }
+
+func GetCurrentProfile(c *fiber.Ctx) (*models.Profile, error) {
+	user, err := GetCurrentUser(c)
+	if err != nil {
+		return nil, err
+	}
+
+	profileRepo := repositories.NewProfileRepo(database.DB)
+	profile, err := profileRepo.GetByUserID(user.ID)
+
+	return profile, err
+}
