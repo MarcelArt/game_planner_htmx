@@ -15,10 +15,12 @@ func SetupRoutes(app *fiber.App) {
 	app.Use(logger.New())
 
 	app.Static("/scripts", "./views/scripts")
+	app.Static("/public", "./public")
 
 	SetupAuthRoutes(app)
 
 	authMiddleware := middleware.NewAuthMiddleware(repositories.NewUserRepo(database.DB), repositories.NewConnectedDeviceRepo(database.DB))
 	app.Use(authMiddleware.Auth)
 	app.Get("/", handlers.Index)
+	SetupProfileRoutes(app)
 }

@@ -1,0 +1,23 @@
+<!-- https://play.tailwindcss.com/bLhdG8YtOQ -->
+<div id="content" class="flex-1 p-10">
+  <h1 class="mb-2 text-2xl font-bold text-white">Profile</h1>
+  <form hx-put="/profile" hx-target="#result" hx-encoding='multipart/form-data' class="flex w-full flex-col items-center rounded-lg bg-white p-4 shadow-md">
+    <label for="file">
+      <img class="center h-64 w-64 cursor-pointer rounded-full" src="{{ .Avatar }}" />
+    </label>
+    <input type="file" id="file" name="file" />
+    <input class="hidden" type="hidden" id="profileId" name="profileId" value="{{ .ID }}" />
+    <div class="my-2 w-full">
+      <label class="ml-2 block font-bold" for="name">Display name</label>
+      <input
+        class="m-1 w-full rounded-md border border-gray-700 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+        type="text"
+        id="name"
+        name="name"
+        value="{{ .Name }}"
+      />
+    </div>
+    <button class="text-white bg-blue-600 self-end m-2 px-4 py-2 rounded-lg" type="submit">Save</button>
+  </form>
+  <div class="fixed bottom-0 right-0 m-4 p-2 rounded w-2/12 self-start" id="result"></div>
+</div>

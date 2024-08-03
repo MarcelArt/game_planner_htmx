@@ -22,3 +22,5 @@ tmp/*
 go.work
 
 .env
+
+public/*
