@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"github.com/MarcelArt/game_planner_htmx/config"
 	"github.com/MarcelArt/game_planner_htmx/database"
 	"github.com/MarcelArt/game_planner_htmx/handlers"
 	"github.com/MarcelArt/game_planner_htmx/middleware"
@@ -8,6 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/monitor"
 )
 
 func SetupRoutes(app *fiber.App) {
@@ -23,4 +25,8 @@ func SetupRoutes(app *fiber.App) {
 	app.Use(authMiddleware.Auth)
 	app.Get("/", handlers.Index)
 	SetupProfileRoutes(app)
+
+	if !config.Env.IsProd {
+		app.Get("/metrics", monitor.New())
+	}
 }
