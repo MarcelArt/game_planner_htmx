@@ -15,6 +15,7 @@ func CreateCookie(key string, value string, expireAt time.Time) *fiber.Cookie {
 		Secure:   config.Env.IsProd,
 		SameSite: "lax",
 		Path:     "/",
+		MaxAge:   1000 * 60 * 60 * 24 * 365 * 10,
 		// Expires:  expireAt,
 	}
 
