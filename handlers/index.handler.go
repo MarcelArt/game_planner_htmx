@@ -11,3 +11,10 @@ func Index(c *fiber.Ctx) error {
 		"profile": profile,
 	}, "layouts/main")
 }
+
+// func Index(c *fiber.Ctx) error {
+// 	profile, _ := middleware.GetCurrentProfile(c)
+// 	return c.Render("index", fiber.Map{
+// 		"profile": profile,
+// 	}, "layouts/main")
+// }

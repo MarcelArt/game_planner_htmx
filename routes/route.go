@@ -17,14 +17,17 @@ func SetupRoutes(app *fiber.App) {
 	app.Use(logger.New())
 
 	app.Static("/scripts", "./views/scripts")
+	app.Static("/styles", "./views/styles")
 	app.Static("/public", "./public")
 
 	SetupAuthRoutes(app)
 
 	authMiddleware := middleware.NewAuthMiddleware(repositories.NewUserRepo(database.DB), repositories.NewConnectedDeviceRepo(database.DB))
 	app.Use(authMiddleware.Auth)
+
 	app.Get("/", handlers.Index)
 	SetupProfileRoutes(app)
+	SetupGameRoutes(app)
 
 	if !config.Env.IsProd {
 		app.Get("/metrics", monitor.New())
