@@ -1,6 +1,14 @@
 <div class="h-full w-full bg-indigo-950">
+  <button
+    hx-get="/game/create"
+    hx-target="#content"
+    class="text-white bg-green-600 hover:bg-green-700 self-end my-4 mx-10 px-2 py-2 rounded-lg"
+    type="submit"
+  >
+    Create
+  </button>
   <div class="grid grid-cols-6 gap-4">
-    <div class="mx-auto max-w-xs">
+    <div class="mx-auto max-w-xs cursor-pointer">
       <div class="card aspect-[3/4] max-h-[230px] overflow-hidden rounded-lg shadow-lg">
         <img
           class="card-image h-full w-full object-cover"

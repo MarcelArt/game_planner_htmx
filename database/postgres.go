@@ -37,6 +37,7 @@ func Migrate() {
 		&models.User{},
 		&models.ConnectedDevice{},
 		&models.Profile{},
+		&models.Game{},
 	)
 	fmt.Println("Database Migrated")
 }

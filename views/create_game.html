@@ -1,0 +1,61 @@
+<!-- https://play.tailwindcss.com/9nJVpyfVYn -->
+<div id="content" class="flex-1 p-10">
+  <h1 class="mb-2 text-2xl font-bold text-white">Create Game Plan Template</h1>
+  <form
+    hx-post="/game/create"
+    hx-target="#content"
+    hx-target-error="#result"
+    hx-encoding="multipart/form-data"
+    class="flex w-full flex-col items-center rounded-lg bg-white p-4 shadow-md"
+  >
+    <label for="file">
+      <img
+        id="game-picture"
+        class="center max-h-[230px] max-w[173px] overflow-hidden rounded-lg shadow-lg cursor-pointer object-cover aspect-[3/4]"
+        src="https://www.minecraft.net/content/dam/games/minecraft/key-art/Vanilla-PMP_Collection-Carousel-0_The-Wild-Update_1280x768.jpg"
+      />
+    </label>
+    <input type="file" id="picture" name="picture" />
+    <div class="my-2 w-full">
+      <label class="ml-2 block font-bold" for="title">Title</label>
+      <input
+        class="m-1 w-full rounded-md border border-gray-700 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 p-1"
+        type="text"
+        id="title"
+        name="title"
+        value=""
+      />
+    </div>
+    <div class="my-2 w-full">
+      <label class="ml-2 block font-bold" for="description">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        class="m-1 w-full rounded-md border border-gray-700 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 p-1"
+      ></textarea>
+      <!-- <input
+        class="m-1 w-full rounded-md border border-gray-700 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+        type="search"
+        id="description"
+        name="description"
+        value=""
+      /> -->
+    </div>
+    <button class="text-white bg-blue-600 self-end m-2 px-4 py-2 rounded-lg" type="submit">Save</button>
+  </form>
+  <div class="fixed bottom-0 right-0 m-4 p-2 rounded w-2/12 self-start" id="result"></div>
+</div>
+<script>
+  document.querySelector('#picture').addEventListener('change', function() {
+    const file = this.files[0];
+    const img = document.getElementById('game-picture');
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        img.src = e.target.result;
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+</script>
