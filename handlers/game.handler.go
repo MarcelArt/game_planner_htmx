@@ -20,7 +20,14 @@ func NewGameHandler(gameRepo repositories.IGameRepo) *GameHandler {
 }
 
 func (h *GameHandler) GamesView(c *fiber.Ctx) error {
-	return c.Render("games", nil)
+	var gamesModel []models.Game
+	games := h.gameRepo.Read(c, gamesModel)
+	return c.Render("games", fiber.Map{
+		"data": games,
+		"page": games.Page + 1,
+		"prev": games.Page,
+		"next": games.Page + 1,
+	})
 }
 
 func (h *GameHandler) CreateGameView(c *fiber.Ctx) error {
@@ -53,5 +60,12 @@ func (h *GameHandler) CreateGame(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).Render("partials/toast", fiber.Map{"error": err.Error()})
 	}
 
-	return c.Render("games", nil)
+	var gamesModel []models.Game
+	games := h.gameRepo.Read(c, gamesModel)
+	return c.Render("games", fiber.Map{
+		"data": games,
+		"page": games.Page + 1,
+		"prev": games.Page,
+		"next": games.Page + 1,
+	})
 }

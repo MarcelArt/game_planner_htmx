@@ -1,42 +1,44 @@
 <div class="flex">
-    <div class="w-64 h-screen bg-indigo-900 shadow-md">
-        <div class="py-4 border-b mx-4 flex">
-            <img id="profile-pic" class="w-16 h-16 rounded-full mr-4 " src="{{ .profile.Avatar }}" alt="Profile Picture">
-            <div>
-              <h2 id="username" class="text-left text-l font-semibold text-white">{{ .profile.Name }}</h2>
-              <button hx-get="/profile" hx-target="#content" class="mt-2 border-2 p-1 rounded-lg border-cyan-300 text-cyan-300 text-sm">My Account</button>
-            </div>
-        </div>
-      <nav class="pt-4">
-        <a
-          href="#"
-          class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-400 text-white font-bold m-4"
-          hx-get="/game"
-          hx-target="#content"
-        >
-          Games
-        </a>
-        <a
-          href="#"
-          class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-400 text-white font-bold m-4"
-          hx-get="/planner"
-          hx-target="#content"
-        >
-          Planner
-        </a>
-        <a
-          href="#"
-          class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-400 text-white font-bold m-4"
-          hx-get="/inventory"
-          hx-target="#content"
-        >
-          Inventory
-        </a>
-      </nav>
+  <div class="w-64 h-screen bg-indigo-900 shadow-md">
+    <div class="py-4 border-b mx-4 flex">
+      <img id="profile-pic" class="w-16 h-16 rounded-full mr-4" src="{{ .profile.Avatar }}" alt="Profile Picture" />
+      <div>
+        <h2 id="username" class="text-left text-l font-semibold text-white">{{ .profile.Name }}</h2>
+        <button hx-get="/profile" hx-target="#content" class="mt-2 border-2 p-1 rounded-lg border-cyan-300 text-cyan-300 text-sm">
+          My Account
+        </button>
+      </div>
     </div>
-    <div id="content" class="flex-1 p-10" hx-get="/game" hx-trigger="load">
-        <!-- Dynamic content will be loaded here -->
-        <h1 class="text-2xl font-bold">Welcome</h1>
-        <p class="mt-4">Select an option from the sidebar to load content dynamically.</p>
-    </div>
+    <nav class="pt-4">
+      <a
+        href="#"
+        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-400 text-white font-bold m-4"
+        hx-get="/game"
+        hx-target="#content"
+      >
+        Games
+      </a>
+      <a
+        href="#"
+        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-400 text-white font-bold m-4"
+        hx-get="/planner"
+        hx-target="#content"
+      >
+        Planner
+      </a>
+      <a
+        href="#"
+        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-indigo-400 text-white font-bold m-4"
+        hx-get="/inventory"
+        hx-target="#content"
+      >
+        Inventory
+      </a>
+    </nav>
+  </div>
+  <div id="content" class="flex-1 p-10" hx-get="/game" hx-trigger="load">
+    <!-- Dynamic content will be loaded here -->
+    <h1 class="text-2xl font-bold">Welcome</h1>
+    <p class="mt-4">Select an option from the sidebar to load content dynamically.</p>
+  </div>
 </div>
