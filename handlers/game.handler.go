@@ -69,3 +69,20 @@ func (h *GameHandler) CreateGame(c *fiber.Ctx) error {
 		"next": games.Page + 1,
 	})
 }
+
+func (h *GameHandler) MyCreatedGamesView(c *fiber.Ctx) error {
+	profile, err := middleware.GetCurrentProfile(c)
+	if err != nil {
+		c.Set("HX-Redirect", "/login")
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+
+	games := h.gameRepo.GetByProfileID(c, profile.ID)
+
+	return c.Render("created_games", fiber.Map{
+		"data": games,
+		"page": games.Page + 1,
+		"prev": games.Page,
+		"next": games.Page + 1,
+	})
+}
