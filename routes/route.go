@@ -26,6 +26,8 @@ func SetupRoutes(app *fiber.App) {
 	app.Use(authMiddleware.Auth)
 
 	app.Get("/", handlers.Index)
+
+	SetupAuthRoutesAfterMiddleware(app)
 	SetupProfileRoutes(app)
 	SetupGameRoutes(app)
 

@@ -21,3 +21,12 @@ func CreateCookie(key string, value string, expireAt time.Time) *fiber.Cookie {
 
 	return cookie
 }
+
+func DeleteCookie(key string) *fiber.Cookie {
+	return &fiber.Cookie{
+		Name:    key,
+		Path:    "/",
+		MaxAge:  -1,
+		Expires: time.Now().Add(-100 * time.Hour),
+	}
+}

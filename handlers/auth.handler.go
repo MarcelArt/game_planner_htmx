@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/MarcelArt/game_planner_htmx/database"
@@ -129,4 +130,24 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 	c.Cookie(rCookie)
 
 	return c.Status(fiber.StatusPermanentRedirect).Redirect("/")
+}
+
+func (h *AuthHandler) Logout(c *fiber.Ctx) error {
+	c.Cookie(utils.DeleteCookie("rt"))
+	c.Cookie(utils.DeleteCookie("at"))
+	rt := c.Cookies("rt", "")
+	device, err := h.connectedDeviceRepo.GetByToken(rt)
+	if err != nil {
+		c.Set("HX-Redirect", "/login")
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	_, err = h.connectedDeviceRepo.Delete(strconv.Itoa(int(device.ID)))
+	if err != nil {
+		c.Set("HX-Redirect", "/login")
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	c.Set("HX-Redirect", "/login")
+	return c.SendStatus(fiber.StatusOK)
 }

@@ -20,3 +20,13 @@ func SetupAuthRoutes(app *fiber.App) {
 	app.Get("/login", authHandler.LoginView)
 	app.Post("/login", authHandler.Login)
 }
+
+func SetupAuthRoutesAfterMiddleware(app *fiber.App) {
+	authHandler := handlers.NewAuthHandler(
+		repositories.NewUserRepo(database.DB),
+		repositories.NewConnectedDeviceRepo(database.DB),
+		repositories.NewProfileRepo(database.DB),
+	)
+
+	app.Get("/logout", authHandler.Logout)
+}

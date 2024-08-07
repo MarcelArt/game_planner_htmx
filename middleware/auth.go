@@ -37,8 +37,8 @@ func (m *AuthMiddleware) Auth(c *fiber.Ctx) error {
 	if at == "" || rt == "" {
 		log.Println("Not logged in")
 		c.Set("HX-Redirect", "/login")
-		return c.SendStatus(fiber.StatusUnauthorized)
-		// return c.Redirect("/login")
+		// return c.SendStatus(fiber.StatusUnauthorized)
+		return c.Redirect("/login")
 	}
 
 	aClaims, isAccessExpired, err := utils.ParseToken(at)
