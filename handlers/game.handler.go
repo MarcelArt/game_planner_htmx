@@ -86,3 +86,7 @@ func (h *GameHandler) MyCreatedGamesView(c *fiber.Ctx) error {
 		"next": games.Page + 1,
 	})
 }
+
+func (h *GameHandler) CreatedGameDetailView(c *fiber.Ctx) error {
+	return c.Render("created_game_detail", nil)
+}

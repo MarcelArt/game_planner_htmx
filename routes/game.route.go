@@ -14,5 +14,6 @@ func SetupGameRoutes(app *fiber.App) {
 	game.Get("/", gameHandler.GamesView)
 	game.Get("/create", gameHandler.CreateGameView)
 	game.Get("/created", gameHandler.MyCreatedGamesView)
+	game.Get("/created/detail", gameHandler.CreatedGameDetailView)
 	game.Post("/create", gameHandler.CreateGame)
 }
