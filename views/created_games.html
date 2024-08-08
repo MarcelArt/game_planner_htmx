@@ -10,7 +10,7 @@
   </button>
   <div class="grid grid-cols-6 gap-4 pb-4 border-b">
     {{ range .data.Items }}
-    <div class="mx-auto max-w-xs cursor-pointer" hx-get="game/created/detail" hx-target="#content">
+    <div class="mx-auto max-w-xs cursor-pointer" hx-get="game/created/detail/{{ .ID }}" hx-target="#content">
       <div class="card aspect-[16/9] max-h-[230px] overflow-hidden rounded-lg shadow-lg">
         <img class="card-image h-full w-full object-cover" src="{{ .Picture }}" alt="Game Image" />
         <div class="card-overlay bg-gray-900 bg-opacity-75">

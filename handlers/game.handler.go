@@ -88,5 +88,43 @@ func (h *GameHandler) MyCreatedGamesView(c *fiber.Ctx) error {
 }
 
 func (h *GameHandler) CreatedGameDetailView(c *fiber.Ctx) error {
-	return c.Render("created_game_detail", nil)
+	id := c.Params("id")
+	return c.Render("created_game_detail", fiber.Map{"id": id})
+}
+
+func (h *GameHandler) UpdateGameView(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	game, err := h.gameRepo.GetByID(id)
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return c.Render("update_game", game)
+}
+
+func (h *GameHandler) UpdateGame(c *fiber.Ctx) error {
+	id := c.Params("id")
+	var gameInput models.Game
+	if err := c.BodyParser(&gameInput); err != nil {
+		return c.Status(fiber.StatusInternalServerError).Render("partials/toast", fiber.Map{"error": err.Error()})
+	}
+
+	pictureFile, err := c.FormFile("picture")
+	if err != nil {
+		pictureFile = nil
+	}
+
+	if pictureFile != nil {
+		c.SaveFile(pictureFile, fmt.Sprintf("./public/%s", pictureFile.Filename))
+		picture := fmt.Sprintf("/public/%s", pictureFile.Filename)
+
+		gameInput.Picture = picture
+	}
+
+	if err := h.gameRepo.Update(id, &gameInput); err != nil {
+		return c.Status(fiber.StatusInternalServerError).Render("partials/toast", fiber.Map{"error": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).Render("partials/toast", fiber.Map{"message": "Game updated successfully"})
 }
