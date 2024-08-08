@@ -30,6 +30,7 @@ func SetupRoutes(app *fiber.App) {
 	SetupAuthRoutesAfterMiddleware(app)
 	SetupProfileRoutes(app)
 	SetupGameRoutes(app)
+	SetupItemRoutes(app)
 
 	if !config.Env.IsProd {
 		app.Get("/metrics", monitor.New())
