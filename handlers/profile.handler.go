@@ -37,8 +37,8 @@ func (h *ProfileHandler) Update(c *fiber.Ctx) error {
 
 	var avatar string
 	if avatarFile != nil {
-		c.SaveFile(avatarFile, fmt.Sprintf("./public/%s", name+avatarFile.Filename))
-		avatar = fmt.Sprintf("/public/%s", name+avatarFile.Filename)
+		c.SaveFile(avatarFile, fmt.Sprintf("./public/uploads/%s", name+avatarFile.Filename))
+		avatar = fmt.Sprintf("/public/uploads/%s", name+avatarFile.Filename)
 	}
 
 	err = h.profileRepo.Update(id, &models.Profile{

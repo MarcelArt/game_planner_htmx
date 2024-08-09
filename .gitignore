@@ -23,4 +23,4 @@ go.work
 
 .env
 
-public/*
+public/uploads/*

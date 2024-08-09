@@ -44,8 +44,8 @@ func (h *GameHandler) CreateGame(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).Render("partials/toast", fiber.Map{"error": err.Error()})
 	}
-	c.SaveFile(pictureFile, fmt.Sprintf("./public/%s", pictureFile.Filename))
-	picture := fmt.Sprintf("/public/%s", pictureFile.Filename)
+	c.SaveFile(pictureFile, fmt.Sprintf("./public/uploads/%s", pictureFile.Filename))
+	picture := fmt.Sprintf("/public/uploads/%s", pictureFile.Filename)
 
 	profile, err := middleware.GetCurrentProfile(c)
 	if err != nil {
@@ -116,8 +116,8 @@ func (h *GameHandler) UpdateGame(c *fiber.Ctx) error {
 	}
 
 	if pictureFile != nil {
-		c.SaveFile(pictureFile, fmt.Sprintf("./public/%s", pictureFile.Filename))
-		picture := fmt.Sprintf("/public/%s", pictureFile.Filename)
+		c.SaveFile(pictureFile, fmt.Sprintf("./public/uploads/%s", pictureFile.Filename))
+		picture := fmt.Sprintf("/public/uploads/%s", pictureFile.Filename)
 
 		gameInput.Picture = picture
 	}
