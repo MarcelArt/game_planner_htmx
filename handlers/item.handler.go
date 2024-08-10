@@ -85,3 +85,41 @@ func (h *ItemHandler) Delete(c *fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusNoContent).Send([]byte(""))
 }
+
+func (h *ItemHandler) UpdateView(c *fiber.Ctx) error {
+	id := c.Params("id")
+	item, err := h.itemRepo.GetByID(id)
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return c.Status(fiber.StatusOK).Render("partials/update_item_modal", item)
+}
+
+func (h *ItemHandler) Update(c *fiber.Ctx) error {
+	id := c.Params("id")
+	var itemInput models.Item
+	if err := c.BodyParser(&itemInput); err != nil {
+		return c.Status(fiber.StatusBadRequest).Render("partials/toast", fiber.Map{"error": err.Error()})
+	}
+
+	pictureFile, err := c.FormFile("picture")
+	if err != nil {
+		pictureFile = nil
+		itemInput.Picture = ""
+	}
+
+	if pictureFile != nil {
+		c.SaveFile(pictureFile, fmt.Sprintf("./public/uploads/%s", pictureFile.Filename))
+		picture := fmt.Sprintf("/public/uploads/%s", pictureFile.Filename)
+
+		itemInput.Picture = picture
+	}
+
+	err = h.itemRepo.Update(id, &itemInput)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).Render("partials/toast", fiber.Map{"error": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).Render("partials/toast", fiber.Map{"message": "Item Updated!"})
+}
