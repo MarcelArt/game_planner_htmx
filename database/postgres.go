@@ -39,6 +39,8 @@ func Migrate() {
 		&models.Profile{},
 		&models.Game{},
 		&models.Item{},
+		&models.Recipe{},
+		&models.RecipeDetail{},
 	)
 	fmt.Println("Database Migrated")
 }
