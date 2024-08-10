@@ -15,4 +15,6 @@ func SetupItemRoutes(app *fiber.App) {
 	item.Get("/:game_id/create", itemHandler.CreateView)
 
 	item.Post("/:game_id/create", itemHandler.Create)
+
+	item.Delete("/:id", itemHandler.Delete)
 }

@@ -74,3 +74,14 @@ func (h *ItemHandler) Create(c *fiber.Ctx) error {
 		"gameId": gameID,
 	})
 }
+
+func (h *ItemHandler) Delete(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	_, err := h.itemRepo.Delete(id)
+	if err != nil {
+		c.Set("HX-Reswap", "innerHTML")
+		return c.Status(fiber.StatusInternalServerError).Render("partials/toast", fiber.Map{"error": err.Error()})
+	}
+	return c.Status(fiber.StatusNoContent).Send([]byte(""))
+}
