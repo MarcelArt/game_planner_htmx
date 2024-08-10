@@ -4,16 +4,18 @@
   <button
     class="text-white bg-green-600 hover:bg-green-700 self-start my-4 mx-0 px-2 py-2 rounded-lg"
     type="submit"
-    hx-get="/item/create"
+    hx-get="/item/{{ .gameId }}/create"
     hx-target="#item-modal"
   >
     Create
   </button>
   <div class="grid grid-cols-6 gap-4">
+    {{ range .data.Items }}
     <div class="bg-gray-600 rounded-lg shadow flex flex-row">
-      <img src="https://hsr.seelie.me/img/items/credit/credit.png" alt="tees">
-      <p class="bg-slate-500 w-full h-full rounded-lg self-center ml-4 pl-2 text-white content-center">Text</p>
+      <img src="{{ .Picture }}" alt="{{ .Name }}">
+      <p class="bg-slate-500 w-full h-full rounded-lg self-center ml-4 pl-2 text-white content-center">{{ .Name }}</p>
     </div>
+    {{ end }}
   </div>
 </div>
 <div id="item-modal"></div>

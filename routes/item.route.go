@@ -11,6 +11,8 @@ func SetupItemRoutes(app *fiber.App) {
 	itemHandler := handlers.NewItemHandler(repositories.NewItemRepo(database.DB))
 
 	item := app.Group("/item")
-	item.Get("/", itemHandler.ItemsView)
-	item.Get("/create", itemHandler.CreateView)
+	item.Get("/:game_id", itemHandler.ItemsView)
+	item.Get("/:game_id/create", itemHandler.CreateView)
+
+	item.Post("/:game_id/create", itemHandler.Create)
 }
