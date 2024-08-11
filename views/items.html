@@ -11,11 +11,11 @@
   </button>
   <div class="grid grid-cols-5 gap-4">
     {{ range .data.Items }}
-    <div class="bg-gray-600 rounded-lg shadow flex flex-row" id="item-{{ .ID }}">
+    <div class="bg-stone-600 rounded-lg shadow flex flex-row" id="item-{{ .ID }}">
       <img src="{{ .Picture }}" alt="{{ .Name }}" class="w-12 h-12 rounded-lg" />
-      <p class="bg-slate-500 w-full h-full rounded-l-lg self-center ml-4 pl-2 text-white content-center text-sm">{{ .Name }}</p>
+      <p class="bg-neutral-500 w-full h-full rounded-l-lg self-center ml-4 pl-2 text-white content-center text-sm">{{ .Name }}</p>
       <button
-        class="bg-slate-500 text-yellow-500 hover:bg-yellow-500 hover:text-white px-2"
+        class="bg-neutral-500 text-yellow-500 hover:bg-yellow-500 hover:text-white px-2"
         hx-get="/item/update/{{ .ID }}"
         hx-target="#item-modal"
       >
@@ -28,7 +28,7 @@
         </svg>
       </button>
       <button
-        class="bg-slate-500 text-red-600 hover:bg-red-600 hover:text-white rounded-r-lg px-2"
+        class="bg-neutral-500 text-red-600 hover:bg-red-600 hover:text-white rounded-r-lg px-2"
         hx-delete="/item/{{ .ID }}"
         hx-target-204="#item-{{ .ID }}"
         hx-target-error="#result"

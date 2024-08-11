@@ -1,4 +1,4 @@
-<div class="h-full w-full bg-indigo-950 flex flex-col">
+<div class="h-full w-full bg-neutral-950 flex flex-col">
   <h1 class="font-bold text-white text-2xl">My Created Game Templates</h1>
   <button
     hx-get="/game/create"
@@ -22,11 +22,11 @@
   </div>
   <div class="mt-5 self-end">
     <nav class="flex items-center space-x-1">
-      <button {{ if .data.First }} disabled {{ end }} class="px-3 py-1 rounded disabled:bg-gray-500 bg-indigo-300 hover:bg-indigo-200" hx-get="/game?page=0&size=30" hx-target="#content"><<</button>
-      <button {{ if .data.First }} disabled {{ end }} class="px-3 py-1 rounded disabled:bg-gray-500 bg-indigo-300 hover:bg-indigo-200" hx-get="/game?page={{ .prev }}&size=30" hx-target="#content"><</button>
-      <button disabled class="px-3 py-1 bg-indigo-300 rounded">{{ .page }}</button>
-      <button {{ if .data.Last }} disabled {{ end }} class="px-3 py-1 rounded disabled:bg-gray-500 bg-indigo-300 hover:bg-indigo-200" hx-get="/game?page={{ .next }}&size=30" hx-target="#content">></button>
-      <button {{ if .data.Last }} disabled {{ end }} class="px-3 py-1 rounded disabled:bg-gray-500 bg-indigo-300 hover:bg-indigo-200" hx-get="/game?page={{ .data.MaxPage }}&size=30" hx-target="#content">>></button>
+      <button {{ if .data.First }} disabled {{ end }} class="px-3 py-1 rounded disabled:bg-gray-500 bg-neutral-300 hover:bg-neutral-200" hx-get="/game?page=0&size=30" hx-target="#content"><<</button>
+      <button {{ if .data.First }} disabled {{ end }} class="px-3 py-1 rounded disabled:bg-gray-500 bg-neutral-300 hover:bg-neutral-200" hx-get="/game?page={{ .prev }}&size=30" hx-target="#content"><</button>
+      <button disabled class="px-3 py-1 bg-neutral-300 rounded">{{ .page }}</button>
+      <button {{ if .data.Last }} disabled {{ end }} class="px-3 py-1 rounded disabled:bg-gray-500 bg-neutral-300 hover:bg-neutral-200" hx-get="/game?page={{ .next }}&size=30" hx-target="#content">></button>
+      <button {{ if .data.Last }} disabled {{ end }} class="px-3 py-1 rounded disabled:bg-gray-500 bg-neutral-300 hover:bg-neutral-200" hx-get="/game?page={{ .data.MaxPage }}&size=30" hx-target="#content">>></button>
     </nav>
   </div>
 </div>
