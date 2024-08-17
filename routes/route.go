@@ -31,6 +31,7 @@ func SetupRoutes(app *fiber.App) {
 	SetupProfileRoutes(app)
 	SetupGameRoutes(app)
 	SetupItemRoutes(app)
+	SetupRecipeRoutes(app)
 
 	if !config.Env.IsProd {
 		app.Get("/metrics", monitor.New())
