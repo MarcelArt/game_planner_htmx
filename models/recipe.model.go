@@ -18,7 +18,7 @@ type RecipeDto struct {
 	ItemID uint `gorm:"not null" form:"itemId"`
 
 	Item          *Item
-	RecipeDetails []*RecipeDetail `form:"recipeDetails"`
+	RecipeDetails []*RecipeDetail `gorm:"foreignKey:RecipeID" form:"recipeDetails"`
 }
 
 func (RecipeDto) TableName() string {

@@ -7,6 +7,7 @@ import (
 
 type IRecipeRepo interface {
 	IBaseCrudRepo[models.Recipe]
+	CreateWithDetail(recipeInput *models.RecipeDto) error
 }
 
 type RecipeRepo struct {
@@ -19,4 +20,8 @@ func NewRecipeRepo(db *gorm.DB) *RecipeRepo {
 			db: db,
 		},
 	}
+}
+
+func (r *RecipeRepo) CreateWithDetail(recipeInput *models.RecipeDto) error {
+	return r.db.Create(&recipeInput).Error
 }
