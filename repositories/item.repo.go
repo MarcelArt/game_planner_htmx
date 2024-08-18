@@ -10,6 +10,7 @@ import (
 type IItemRepo interface {
 	IBaseCrudRepo[models.Item]
 	GetByGameID(c *fiber.Ctx, gameID string) paginate.Page
+	GetDropdownByGameID(gameID uint) ([]*models.Item, error)
 }
 
 type ItemRepo struct {
@@ -30,4 +31,11 @@ func (r *ItemRepo) GetByGameID(c *fiber.Ctx, gameID string) paginate.Page {
 
 	pg := paginate.New()
 	return pg.With(query).Request(c.Request()).Response(&model)
+}
+
+func (r *ItemRepo) GetDropdownByGameID(gameID uint) ([]*models.Item, error) {
+	var items []*models.Item
+	err := r.db.Where("game_id = ?", gameID).Find(&items).Error
+
+	return items, err
 }

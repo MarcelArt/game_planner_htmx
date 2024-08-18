@@ -15,4 +15,5 @@ func SetupRecipeRoutes(app *fiber.App) {
 
 	recipe := app.Group("/recipe")
 	recipe.Get("/:item_id/create", recipeHandler.CreateView)
+	recipe.Get("/:item_id/add", recipeHandler.AddRecipeItem)
 }

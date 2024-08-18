@@ -25,7 +25,32 @@ func (h *RecipeHandler) CreateView(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).Render("partials/toast", fiber.Map{"error": err.Error()})
 	}
 
+	dropdownItems, err := h.itemRepo.GetDropdownByGameID(item.GameID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).Render("partials/toast", fiber.Map{"error": err.Error()})
+	}
+
 	return c.Status(fiber.StatusOK).Render("partials/create_recipe_modal", fiber.Map{
-		"item": item,
+		"item":          item,
+		"dropdownItems": dropdownItems,
+	})
+}
+
+func (h *RecipeHandler) AddRecipeItem(c *fiber.Ctx) error {
+	itemID := c.Params("item_id")
+
+	item, err := h.itemRepo.GetByID(itemID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).Render("partials/toast", fiber.Map{"error": err.Error()})
+	}
+
+	dropdownItems, err := h.itemRepo.GetDropdownByGameID(item.GameID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).Render("partials/toast", fiber.Map{"error": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).Render("partials/recipe_item", fiber.Map{
+		"item":          item,
+		"dropdownItems": dropdownItems,
 	})
 }
